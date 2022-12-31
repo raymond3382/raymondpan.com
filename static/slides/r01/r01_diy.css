@@ -1,0 +1,29 @@
+div.footer {
+     position: fixed;
+     bottom:0;
+     text-align: center;
+     margin-right: auto;
+     margin-left: auto;
+     width: 100%;
+}
+div.footer span {
+    font-size: 13pt; /*  */ 
+    color: black ;
+    text-align: center;
+    width: 100%;
+    bottom: 1px;
+}
+
+.bg1{
+  background-color: #002b36 ;
+  color: white;
+}
+
+.bg2{
+  background-color: #fdf6e3;
+  color: #657b83;
+}
+
+.nh1 h1{
+  color: gold;
+}

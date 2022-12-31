@@ -1,0 +1,375 @@
+---
+output:
+  xaringan::moon_reader:
+    seal: false
+    css: [xaringan-themer.css,r01_diy.css,uo-fonts]
+    nature:
+      slideNumberFormat: "%current% / %total%"
+      ratio: 16:9
+      countIncrementalSlides: true
+    self-contained: ture
+    includes:
+      in_header: "r01_datacamp.html"
+---
+
+class: middle, inverse, nh1
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  fig.width=9, fig.height=3.5, fig.retina=3,
+  out.width = "100%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  hiline = TRUE
+)
+```
+
+
+```{r xaringanExtra, echo = FALSE}
+library(xaringanthemer)
+style_solarized_light()
+library(xaringanExtra)
+xaringanExtra::use_tile_view()
+xaringanExtra::use_panelset()
+xaringanExtra::use_search(show_icon = TRUE)
+xaringanExtra::use_fit_screen()
+xaringanExtra::use_progress_bar(color = "darkred", location = "top")
+xaringanExtra::style_panelset_tabs(foreground = "darkred")
+```
+
+# Chapter 1 Introduction 
+
+ <font size = 6>Haibo Pan</font> <br>
+ <font size = 5>Dec-9, 2021</font>
+
+---
+layout:true
+<div class="footer">
+<span> 
+<font color ='grey'>Copyright &copy 2021. Haibo Pan. All rights reserved</font></span> 
+</div>
+
+
+
+---
+class:
+
+# Outline 
+.panelset.sideways[
+.panel[ .panel-name[Agenda]
+
+**Week1:  R Essentials**
+
+Week2:  R and Data Manipulation
+
+Week3:  R and Factor Analysis
+
+Week4:  R and Clustering Analysis
+
+Week5:  R and Hypotheses Testing
+
+Week6:  R and ANOVA
+
+Week7:  R and Regression
+
+Week8:  R and Probit Model
+
+Week9:  R and Data Visualization
+
+Week10:  R and Data Sharing and Presentation
+
+]
+
+.panel[ .panel-name[ILO]
+
+ILO1: Learn How to Learn a New Language
+
+ILO2: Conduct Data Analysis by R
+
+ILO3: Plot Beautify Graphs by R
+
+ILO4: Write Data Report by R
+
+ILO5: Present Data Results by R
+
+]
+
+.panel[ .panel-name[Evaluation]
+
+- In-class Participation (20%)
+
+- Individual Project (30%)
+
+- Final Examination (50%)
+
+]
+
+.panel[ .panel-name[Requirements]
+ <br>
+ ### No Noise in the Class!
+ 
+]
+]
+
+---
+class: middle, inverse
+
+.pull-left[
+
+## R Essentials
+
+]
+.pull-right[
+# **What's R?**
+
+# **Why R?**
+
+# **How to Learn R?**
+]
+
+---
+# What's R ?
+
+--
+.panelset[
+.panel[ .panel-name[Introduction]
+
+- R is a **scripting language** for statistical data manipulation and analysis.
+
+> The best advantage for scripting language is that you can record your actions.
+
+<br>
+- R is inspired by, and is mostly compatible with, **S language** developed by AT&T.
+
+> S namely stands for statistics. 
+
+<br>
+- R is the initial of its two **originators**, Robert Gentleman and Ross Ihaka
+]
+
+.panel[ .panel-name[Originators]
+.pull-left[
+![Robert Gentleman](r01_appx/RobertGentleman.jpg)
+
+**Robert Gentleman** (born 1959)
+> A **Canadian** statistician and bioinformatician, currently vice president of computational biology at 23andMe.
+]
+
+.pull-right[
+![Ross Ihaka](r01_appx/RossIhaka.jpg)
+
+**Ross Ihaka**(born 1954)
+> A **New Zealand** statistician. He was an Associate Professor of Statistics at the University of Auckland until his retirement in 2017.
+
+]
+]
+]
+
+---
+# Why R?
+
+--
+Three things primarily attracted me to R
+
+- The easy-to-understand-and-use syntax 
+
+- The incredible RStudio IDE
+
+- R Packages !!!
+
+---
+.panelset[
+.panel[.panel-name[Pros and Cons]
+.pull-left[
+## Pros:
+- Free !!!
+
+- Open source
+
+- Small size
+
+- Write your own packages !!!
+]
+
+.pull-right[
+## Cons:
+- Steep Learning Curve
+]
+]
+
+.panel[.panel-name[R VS Stata,SPSS,Mplus,SAS]
+
+- To some extent, **R** is like a ***mini OS*** and **Stata**, **SPSS**, **Mplus**, and **SAS** are like a collection of “packages” on the platform. 
+
+<br>
+
+- Technically, **R** can do everything **Stata**, **SPSS**, **Mplus** and **SAS** can do, but the later cannot do everything R can do !
+
+]
+
+.panel[.panel-name[R VS Python]
+
+- Both are free and open source.
+
+- Both are more likely mini operation systems. 
+
+> In some specific fields, they are interchangeable. However,  **R** is more friendly to statisticians whereas **Python** is more friendly to data scientist !
+
+]
+]
+
+---
+
+# How to Learn R ?
+.panelset[.panel[.panel-name[Hot Tips]
+
+- Clarify your purpose before starting R
+
+- Following a textbook or tutorial to familiarize R and RStudio
+
+- Practice R with your projects by RStudio
+
+- **Google** or **Bing** your questions when you are in trouble
+
+- Use ***?*** function and **[help](https://www.rdocumentation.org)** documents when you forget the functions
+
+]
+.panel[.panel-name[RStudio]
+
+- RStudio is an integrated development environment (**IDE**) for R. 
+> **IDE** seems a little like a theme on computers or phones.
+
+<br>
+#### You can treat RStudio as a more friendly graphical user interface (**GUI**) than default GUI for us! 
+
+]
+.panel[.panel-name[R Packages]
+
+To some extent, **R** is more like a mini operating system (**OS**) rather than just an applied software. 
+
+- In **R**, we use different packages to solve different problems. 
+Here **packages** are like applied software on other OSs (e.g., Windows/MacOS/Linux )
+
+- Different packages in **R** sometimes can solve the same problem. 
+> For instance, ***tidyverse*** and ***data.table*** are both excellent packages for data manipulation. 
+> - They are written by different authors but solve the same problem by different logic. 
+> - The differences are a little like the differences among Microsoft Word and Google Doc. 
+> - You can choose either just by your preference!
+
+]
+
+.panel[.panel-name[R Markdown]
+
+**R Markdown** is a file format for making dynamic documents with **R**.
+
+- **R Markdown** can hep you report the results of data analysis
+
+- **R Markdown** can help you present the results of data analysis
+
+- **R Markdown** can help you write academic paper
+
+
+]
+]
+
+---
+## Reference for Learning R
+
+.panelset[
+.panel[.panel-name[General]
+-  [R Fun](https://rfun.library.duke.edu)
+
+-   [R Teaching](https://education.rstudio.com/teach/tools/)
+
+-   [R Documentation](https://www.rdocumentation.org/?=ggplot&=%s)
+
+-   [What They Forget to Teach you about R](https://rstats.wtf)
+
+]
+.panel[.panel-name[R and Data Analysis]
+
+
+-  [Learning Statistics in R](https://ademos.people.uic.edu/index.html)
+
+-   [Introduction to Econometrics with R](https://www.econometrics-with-r.org/index.html)
+
+-   [R Linear Regression Bayesian](https://www.rensvandeschoot.com/tutorials/r-linear-regression-bayesian-using-brms/)
+
+-   [Exploratory Data Analysis](https://edav.info/mosaic.html)
+
+]
+.panel[.panel-name[R Package Tutorials]
+
+.pull-left[
+-  [Xaringan](https://bookdown.org/yihui/rmarkdown/xaringan.html) for power point
+
+-  [Xaringan Extra](https://pkg.garrickadenbuie.com/xaringanExtra/#/README?id=xaringanextra)
+
+-  [Xaringan Theme Generator](https://pkg.garrickadenbuie.com/xaringanthemer/articles/xaringanthemer.html)
+
+-  [data.table](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
+
+-  [FactoMineR](http://factominer.free.fr/factomethods/index.html) for factor analysis and clustering analysis
+
+-  [Factoextra](http://www.sthda.com/english/wiki/factoextra-r-package-easy-multivariate-data-analyses-and-elegant-visualization)
+]
+.pull-right[
+-  [lavaan](https://lavaan.ugent.be) for SEM
+
+-  [lme4](https://www.rensvandeschoot.com/tutorials/lme4/) for HLM
+
+-  [ggplot2](https://ggplot2-book.org) for figures
+
+-  [gt](https://gt.rstudio.com/articles/intro-creating-gt-tables.html) for tables
+
+-  [ggpubr](https://rpkgs.datanovia.com/ggpubr/index.html)
+
+-  [sjPlot](https://strengejacke.github.io/sjPlot/)
+
+-  [stargazer](https://www.princeton.edu/~otorres/NiceOutputR.pdf)
+]
+]
+.panel[.panel-name[R Markdown]
+-  [R Markdown](https://bookdown.org/yihui/rmarkdown/yihui-xie.html)
+
+-  [R Markdown for Scientists](https://rmd4sci.njtierney.com)
+
+- [R Blogdown](https://bookdown.org/yihui/blogdown/)
+
+-  [R Bookdown](https://bookdown.org/yihui/bookdown/)
+
+-  [CSS](https://www.w3schools.com/css/css_background.asp)
+
+-  [HTML](https://www.w3schools.com/html/html_intro.asp)
+]
+]
+
+---
+class: middle inverse nh1
+
+# R Download and Installation
+---
+class: middle
+
+## R download and installation
+
+https://mirror-hk.koddos.net/CRAN/
+
+--
+
+## R Studio download and installation
+
+https://rstudio.com/products/rstudio/download/#download
+
+--
+
+## R Package Download and Installation
+
+```{r eval=F}
+install.packages("data.table") # download and install the package
+library(data.table) # open the package
+```
+

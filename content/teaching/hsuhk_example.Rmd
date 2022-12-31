@@ -1,0 +1,429 @@
+---
+title: "An Example of Data Analysis by R"
+date: "`r Sys.Date()`"
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+# 1. Environment Preparation
+
+## 1.1 Environment Cleansing
+
+```{r}
+rm(list = ls()) # remove all objects
+```
+
+## 1.2 Environment Checking
+
+```{r}
+sessionInfo() # check current environment
+version # check the version of r
+```
+
+## 1.3 Packages Loading
+
+```{r packags-loading, warning=F, message=F,tidy=T}
+library(data.table)
+library(sjPlot)
+library(ggpubr)
+library(psych)
+library(plm)
+library(jtools)
+library(zoo)
+library(stargazer)
+library(knitr)
+```
+
+```{r setup, echo=F}
+options(max.print=1000)
+knitr:: opts_chunk$set(fig.align = "center", 
+                       tidy = T, 
+                       warning = F,
+                       message = F, 
+                       comment = NA)
+```
+
+# 2. Data Import
+
+```{r}
+dt <- fread("~/Library/CloudStorage/OneDrive-Personal/Focus/e00/diss3_data/diss_e2_hsuhk.csv") # import data
+```
+
+# 3 Data Tidy
+## 3.1 Variable Generation
+
+```{r dv}
+dt |> setorder(mid, year) # rank the data by mid and year
+
+# Gen DV: log total revenue and then log it as DV ------------------------------
+dt[, totrev_log := log(totrev +1)]
+
+# Gen IV: the average of AS in year t and in year t-1 ---------------------------
+dt[, ads2 := ifelse(is.na(ads),adsmkt,ads)]
+dt[, ads2_lag :=shift(ads2,1),by="mid"]
+dt[, ads2_lag2 :=shift(ads2,2),by="mid"]
+dt[, ads2_mean :=rowMeans(dt[,.(ads2,ads2_lag)],na.rm=T)]
+dt[, ads2_mean := ifelse(is.nan(ads2_mean),NA, ads2_mean)]
+dt[, ads2_mean_log := ifelse(is.na(ads2_mean),NA, log(ads2_mean))]
+
+# Gen Moderators -------------------------------------------------
+## Franchisee Proportion
+dt[, pof := ifelse(is.na(tend), NA, round(fend/tend,3))]
+dt[, pof_log :=log(pof +1)]
+
+## Franchisee Dispersion
+dt[, fend_nstate_log := round(log(fend_nstate+1),3)]
+
+### Gen Control variables -------------------------------------------------
+dt[, `:=`(age= year-eyear, exp =year-fyear)]  # age 
+dt[, `:=`(age= ifelse(age<0,0,age), exp=ifelse(exp<0,0,exp))] # experience
+dt[, `:=` (age_log = log(age +1), exp_log =log(exp +1))]
+
+dt[, tend_log := round(log(tend +1),3)] # system size
+
+dt[, train := (train1+train2)/2] # system support: training
+dt[, train_log := ifelse(train==0, 0, round(log(train+1),3))]
+
+dt[, rratio := (rratio1+rratio2)/2] # royalty ratio
+
+dt[, pgdp := ifelse(is.na(pop),NA, round(gdp/pop,3))] # gpd per capita
+dt[, pgdp_log := ifelse(pgdp==0, 0, round(log(pgdp+1),3))]
+
+dt[, pop_log := ifelse(pop==0, 0, round(log(pop+1),3))] # population 
+```
+
+## 3.2 Sample Selection
+
+```{r}
+# rank the observations by industry
+dt[,.N/10, by=naics_2]  |>  
+  setnames(1:2, c("Industry", "N")) |> 
+  setorder(-N,Industry) |> 
+  tab_df()
+
+# delete the industry of which the number of franchisors is less than 3
+dt<- dt[ !(naics_2 %in% c(52,49,71,62,53))]
+
+# calculate the number of franchisors that do not disclose ads at all. 
+dt[, select1 := ifelse(is.na(ads2),0,1)]
+dt[, select1_sum := sum(select1), by=c("mid")]
+
+# calculate the number of franchisors that do not use royalty ratio. 
+dt[, select2 := ifelse(is.na(rratio),0,1)]
+dt[, select2_sum := sum(select2), by=c("mid")]
+
+# mark the franchisors we choose in our sample
+dt[, select := ifelse(select1_sum > 0 & select2_sum >0, 1,0)]
+dt <- dt[select ==1]
+```
+
+## 3.3 Missing Value Imputation
+
+```{r}
+dt |> setorder(mid, year)
+# the first non missing value replace; locf--> location forward
+dt[,train_log := na.locf(train_log,na.rm=F), by="mid"] 
+# the last non missing value replace
+dt[,train_log := na.locf(train_log,na.rm=F,fromLast =T), by="mid"] 
+
+# the first non missing value replace
+dt[,rratio := na.locf(rratio,na.rm=F), by="mid"] 
+# the last non missing value replace
+dt[,rratio := na.locf(rratio,na.rm=F,fromLast =T), by="mid"] 
+
+```
+
+## 3.4 Variable Selection
+
+```{r FinData}
+dt[, `:=`(SP = totrev_log,
+          AS = ads2_mean_log,
+          FP = pof,
+          FD = fend_nstate_log,
+          SIZE = tend_log,
+          RR = rratio,
+          SUPPORT = train_log,
+          AGE = age_log,
+          POP = pop_log,
+          PGDP = pgdp_log)]
+dv <- c("SP")
+iv <- c("AS", "FP", "FD")
+cv <- c("SIZE", "RR", "SUPPORT", 
+        "AGE", "POP", 
+        "PGDP")
+fdt <- dt[, .SD, .SDcols = c("mid","year","naics_2", "franchisor", dv,iv,cv)]
+
+```
+
+# 4. Exploratory Data Analysis
+
+## 4.1 Sample Description
+
+
+```{r }
+# display mid, franchisor name, and year 
+fdt[,.(naics_2, mid, franchisor)] |> 
+  unique() |> as.data.table(keep.rownames = T) |> 
+  setnames(1:3, c("Industry","MatchID","Franchisor")) |> 
+  setorder(Industry, MatchID) |> 
+  kable()
+
+# count the number of franchisors in each industry
+fdt[, .N/10, by = "naics_2"] |> 
+  setnames(1:2, c("Industry","N")) |> 
+  setorder(-N, Industry) |> 
+  tab_df()
+
+# describe the DV, IV, Moderators, and CV
+fdt[, -c("mid", "year", "naics_2", "franchisor")] |> 
+  describe() |> as.data.table(keep.rownames = T) |> tab_df()
+
+```
+
+
+
+## 4.2 Correlation Analysis
+
+```{r }
+## the relationship between IV and DV
+fdt |> ggscatterhist(x= "AS", y="SP")
+
+## the correlation figure
+fdt[, -c("mid", "year", "naics_2","franchisor")] |> sjp.corr()
+
+## the correlation table
+fdt[, -c("mid", "year", "naics_2","franchisor")] |> 
+  tab_corr(triangle = "lower", 
+           p.numeric = F, digits = 2)
+```
+
+
+# 5. Hypotheses Testing
+
+## 5.1 Regression Codes
+
+```{r}
+fdt |> is.pbalanced() # TRUE
+fdt |> setorder(mid, year)
+
+m11<-formula(SP ~  #AS  
+            # + FP + FD
+            # + I(scale(fdt$AS) * scale(fdt$FP)) 
+            # + I(scale(fdt$AS) * scale(fdt$FD))
+             I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + AGE
+             + SUPPORT
+             + RR
+             + POP  
+             + PGDP
+             + factor(naics_2) + factor(year) 
+             | factor(naics_2) 
+             + factor(year)
+             + POP 
+             + PGDP
+             + AGE
+             |  #AS + FP + FD 
+               I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + SUPPORT + RR 
+             #+ I(scale(fdt$AS) * scale(fdt$FP)) 
+             #+ I(scale(fdt$AS)* scale(fdt$FD))
+)
+
+
+ht11<-plm(m11, fdt, index=c("mid","year"),random.method="ht", model="random", inst.method = "baltagi")
+
+# fwrite(data.table(round(summary(ht11,digit=3)$coefficients,3),keep.rownames = T),"ht11_coefficient.csv")
+
+m12<-formula(SP ~  AS  
+             #+ FP + FD
+            # + I(scale(fdt$AS) * scale(fdt$FP)) 
+            # + I(scale(fdt$AS) * scale(fdt$FD))
+             + I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + AGE
+             + SUPPORT
+             + RR
+             + POP  
+             + PGDP
+             + factor(naics_2) + factor(year) 
+             | factor(naics_2) 
+             + factor(year)
+             + POP 
+             + PGDP
+             + AGE
+             |  AS #+ FP + FD 
+             + I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + SUPPORT + RR 
+            # + I(scale(fdt$AS) * scale(fdt$FP)) 
+            # + I(scale(fdt$AS)* scale(fdt$FD))
+)
+
+
+ht12<-plm(m12, fdt, index=c("mid","year"),random.method="ht", model="random", inst.method = "baltagi")
+
+m13<-formula(SP ~  AS  
+             + FP #+ FD
+             + I(scale(fdt$AS) * scale(fdt$FP)) 
+            # + I(scale(fdt$AS) * scale(fdt$FD))
+             + I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + AGE
+             + SUPPORT
+             + RR
+             + POP  
+             + PGDP
+             + factor(naics_2) + factor(year) 
+             | factor(naics_2) 
+             + factor(year)
+             + POP 
+             + PGDP
+             + AGE
+             |  AS + FP #+ FD 
+             + I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + SUPPORT + RR 
+             + I(scale(fdt$AS) * scale(fdt$FP)) 
+            # + I(scale(fdt$AS)* scale(fdt$FD))
+)
+
+
+ht13<-plm(m13, fdt, index=c("mid","year"),random.method="ht", model="random", inst.method = "baltagi")
+
+m14<-formula(SP ~  AS  
+             #+ FP 
+             + FD
+             #+ I(scale(fdt$AS) * scale(fdt$FP)) 
+             + I(scale(fdt$AS) * scale(fdt$FD))
+             + I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + AGE
+             + SUPPORT
+             + RR
+             + POP  
+             + PGDP
+             + factor(naics_2) + factor(year) 
+             | factor(naics_2) 
+             + factor(year)
+             + POP 
+             + PGDP
+             + AGE
+             |  AS + FD #+ FP 
+             + I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + SUPPORT + RR 
+             # + I(scale(fdt$AS) * scale(fdt$FP)) 
+             + I(scale(fdt$AS)* scale(fdt$FD))
+)
+
+ht14<-plm(m14, fdt, index=c("mid","year"),random.method="ht", model="random", inst.method = "baltagi")
+
+m15<-formula(SP ~  AS  
+             + FP + FD
+             + I(scale(fdt$AS) * scale(fdt$FP)) 
+             + I(scale(fdt$AS) * scale(fdt$FD))
+             + I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + AGE
+             + SUPPORT
+             + RR
+             + POP  
+             + PGDP
+             + factor(naics_2) + factor(year) 
+             | factor(naics_2) 
+             + factor(year)
+             + POP 
+             + PGDP
+             + AGE
+             |  AS + FP + FD 
+             + I(scale(fdt$SIZE, center = T, scale = F)) 
+             + I(scale(fdt$SIZE, center = T, scale = F)^2)
+             + SUPPORT + RR 
+             + I(scale(fdt$AS) * scale(fdt$FP)) 
+             + I(scale(fdt$AS)* scale(fdt$FD))
+)
+
+
+ht15<-plm(m15, fdt, index=c("mid","year"),random.method="ht", model="random", inst.method = "baltagi")
+```
+
+## 5.2 Regression Table
+```{r, results='asis'}
+# regression table 
+stargazer(ht11,ht12,ht13,ht14,ht15, type="html", 
+          single.row= F, intercept.bottom = F,
+          dep.var.labels = "Sales Performance",
+          keep = c("Constant",
+                    "AS",
+                    "FP",
+                    "FD",
+                    "I(scale(fdt$AS)*scale(fdt$FP))",
+                  "I(scale(fdt$AS)*scale(fdt$FD))",
+                  "I(scale(fdt$SIZE, center = T, scale = F))",
+                  "I(scale(fdt$SIZE, center = T, scale = F)^2)",
+                  "AGE",
+                  "SUPPORT",
+                  "RR",
+                  "POP", 
+                  "PGDP"),
+          order = c("Constant",
+                    "AS",
+                    "FP",
+                    "FD",
+                    "I(scale(fdt$AS)*scale(fdt$FP))",
+                  "I(scale(fdt$AS)*scale(fdt$FD))",
+                  "I(scale(fdt$SIZE, center = T, scale = F))",
+                  "I(scale(fdt$SIZE, center = T, scale = F)^2)",
+                  "AGE",
+                  "SUPPORT",
+                  "RR",
+                  "POP", 
+                  "PGDP"),
+          covariate.labels = c("Intercept","Ads Spending (AS)",
+                               "Franchisee Proportion (FP)",
+                               "Franchisee Dispersion (FD)",
+                               "AS*FP",
+                               "AS*FD",
+                               "System Size",
+                               "System Size Square",
+                               "System Age",
+                               "Support",
+                               "Royalty Ratio",
+                               "Population" ,
+                               "GDP Per Capita")) 
+```
+
+## 5.3 Interaction Plot
+```{r}
+fd_mean <- 3.157
+fd_sd <- 0.746
+fd_min <- fd_mean - fd_sd
+fd_max <- fd_mean + fd_sd
+as <- c(10.229, 15.567)
+fd <- as.data.table(as)
+fd[, fd_low := 37.021 - 0.509*fd_min + (0.078 -0.236 *fd_min)*as]
+fd[, fd :=  37.021 - 0.509*fd_mean + (0.078 -0.236 *fd_mean)*as]
+fd[, fd_high:=  37.021 - 0.509*fd_max + (0.078 -0.236 *fd_max)*as]
+fd_melt <- melt(fd, id.vars = "as", measure.vars = c("fd_low","fd","fd_high"), variable.name = "group", value.name = "FD")
+
+fd_melt |> 
+  ggplot(aes(x=as, y= FD, color= group)) + 
+  geom_line() +
+  labs(x= "Ads Spending", y="Sales Performance") +
+  scale_color_discrete(name = "Franchisee Dispersion", 
+                       labels = c("Low (Mean-1SD)",
+                                  "Medium (Mean)",
+                                  "High (Mean + 1SD)")) + 
+     theme_bw(base_family = "Times New Roman", base_size = 11) + 
+     theme(# legend.title = element_blank(),
+           legend.key.size = unit(0.5,"cm"),
+           legend.position = "top",
+           legend.justification = "left",
+           axis.title = element_text(size = 12,colour = "black"),
+           panel.grid = element_blank()) 
+
+```
+

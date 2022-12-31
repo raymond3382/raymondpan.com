@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>r01_ch1_introduction_211204.knit</title>
+    <meta charset="utf-8" />
+    <script src="r01_ch1_introduction_211204_files/header-attrs/header-attrs.js"></script>
+    <link href="r01_ch1_introduction_211204_files/remark-css/uo-fonts.css" rel="stylesheet" />
+    <link href="r01_ch1_introduction_211204_files/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="r01_ch1_introduction_211204_files/tile-view/tile-view.js"></script>
+    <link href="r01_ch1_introduction_211204_files/panelset/panelset.css" rel="stylesheet" />
+    <script src="r01_ch1_introduction_211204_files/panelset/panelset.js"></script>
+    <script src="r01_ch1_introduction_211204_files/mark.js/mark.min.js"></script>
+    <link href="r01_ch1_introduction_211204_files/xaringanExtra-search/search.css" rel="stylesheet" />
+    <script src="r01_ch1_introduction_211204_files/xaringanExtra-search/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":true,"autoSearch":true}) })</script>
+    <script src="r01_ch1_introduction_211204_files/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <script src="r01_ch1_introduction_211204_files/xaringanExtra-progressBar/progress-bar.js"></script>
+    <script type="text/javascript" src="//cdn.datacamp.com/dcl-react.js.gz"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="r01_diy.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: middle, inverse, nh1
+
+
+
+
+<style>.xe__progress-bar__container {
+  top:0;
+  opacity: 1;
+  position:absolute;
+  right:0;
+  left: 0;
+}
+.xe__progress-bar {
+  height: 0.25em;
+  background-color: darkred;
+  width: calc(var(--slide-current) / var(--slide-total) * 100%);
+}
+.remark-visible .xe__progress-bar {
+  animation: xe__progress-bar__wipe 200ms forwards;
+  animation-timing-function: cubic-bezier(.86,0,.07,1);
+}
+@keyframes xe__progress-bar__wipe {
+  0% { width: calc(var(--slide-previous) / var(--slide-total) * 100%); }
+  100% { width: calc(var(--slide-current) / var(--slide-total) * 100%); }
+}</style><style>.panelset{--panel-tab-foreground: darkred;}</style>
+
+# Chapter 1 Introduction 
+
+ &lt;font size = 6&gt;Haibo Pan&lt;/font&gt; &lt;br&gt;
+ &lt;font size = 5&gt;Dec-9, 2021&lt;/font&gt;
+
+---
+layout:true
+&lt;div class="footer"&gt;
+&lt;span&gt; 
+&lt;font color ='grey'&gt;Copyright &amp;copy 2021. Haibo Pan. All rights reserved&lt;/font&gt;&lt;/span&gt; 
+&lt;/div&gt;
+
+
+
+---
+class:
+
+# Outline 
+.panelset.sideways[
+.panel[ .panel-name[Agenda]
+
+**Week1:  R Essentials**
+
+Week2:  R and Data Manipulation
+
+Week3:  R and Factor Analysis
+
+Week4:  R and Clustering Analysis
+
+Week5:  R and Hypotheses Testing
+
+Week6:  R and ANOVA
+
+Week7:  R and Regression
+
+Week8:  R and Probit Model
+
+Week9:  R and Data Visualization
+
+Week10:  R and Data Sharing and Presentation
+
+]
+
+.panel[ .panel-name[ILO]
+
+ILO1: Learn How to Learn a New Language
+
+ILO2: Conduct Data Analysis by R
+
+ILO3: Plot Beautify Graphs by R
+
+ILO4: Write Data Report by R
+
+ILO5: Present Data Results by R
+
+]
+
+.panel[ .panel-name[Evaluation]
+
+- In-class Participation (20%)
+
+- Individual Project (30%)
+
+- Final Examination (50%)
+
+]
+
+.panel[ .panel-name[Requirements]
+ &lt;br&gt;
+ ### No Noise in the Class!
+ 
+]
+]
+
+---
+class: middle, inverse
+
+.pull-left[
+
+## R Essentials
+
+]
+.pull-right[
+# **What's R?**
+
+# **Why R?**
+
+# **How to Learn R?**
+]
+
+---
+# What's R ?
+
+--
+.panelset[
+.panel[ .panel-name[Introduction]
+
+- R is a **scripting language** for statistical data manipulation and analysis.
+
+&gt; The best advantage for scripting language is that you can record your actions.
+
+&lt;br&gt;
+- R is inspired by, and is mostly compatible with, **S language** developed by AT&amp;T.
+
+&gt; S namely stands for statistics. 
+
+&lt;br&gt;
+- R is the initial of its two **originators**, Robert Gentleman and Ross Ihaka
+]
+
+.panel[ .panel-name[Originators]
+.pull-left[
+![Robert Gentleman](r01_appx/RobertGentleman.jpg)
+
+**Robert Gentleman** (born 1959)
+&gt; A **Canadian** statistician and bioinformatician, currently vice president of computational biology at 23andMe.
+]
+
+.pull-right[
+![Ross Ihaka](r01_appx/RossIhaka.jpg)
+
+**Ross Ihaka**(born 1954)
+&gt; A **New Zealand** statistician. He was an Associate Professor of Statistics at the University of Auckland until his retirement in 2017.
+
+]
+]
+]
+
+---
+# Why R?
+
+--
+Three things primarily attracted me to R
+
+- The easy-to-understand-and-use syntax 
+
+- The incredible RStudio IDE
+
+- R Packages !!!
+
+---
+.panelset[
+.panel[.panel-name[Pros and Cons]
+.pull-left[
+## Pros:
+- Free !!!
+
+- Open source
+
+- Small size
+
+- Write your own packages !!!
+]
+
+.pull-right[
+## Cons:
+- Steep Learning Curve
+]
+]
+
+.panel[.panel-name[R VS Stata,SPSS,Mplus,SAS]
+
+- To some extent, **R** is like a ***mini OS*** and **Stata**, **SPSS**, **Mplus**, and **SAS** are like a collection of “packages” on the platform. 
+
+&lt;br&gt;
+
+- Technically, **R** can do everything **Stata**, **SPSS**, **Mplus** and **SAS** can do, but the later cannot do everything R can do !
+
+]
+
+.panel[.panel-name[R VS Python]
+
+- Both are free and open source.
+
+- Both are more likely mini operation systems. 
+
+&gt; In some specific fields, they are interchangeable. However,  **R** is more friendly to statisticians whereas **Python** is more friendly to data scientist !
+
+]
+]
+
+---
+
+# How to Learn R ?
+.panelset[.panel[.panel-name[Hot Tips]
+
+- Clarify your purpose before starting R
+
+- Following a textbook or tutorial to familiarize R and RStudio
+
+- Practice R with your projects by RStudio
+
+- **Google** or **Bing** your questions when you are in trouble
+
+- Use ***?*** function and **[help](https://www.rdocumentation.org)** documents when you forget the functions
+
+]
+.panel[.panel-name[RStudio]
+
+- RStudio is an integrated development environment (**IDE**) for R. 
+&gt; **IDE** seems a little like a theme on computers or phones.
+
+&lt;br&gt;
+#### You can treat RStudio as a more friendly graphical user interface (**GUI**) than default GUI for us! 
+
+]
+.panel[.panel-name[R Packages]
+
+To some extent, **R** is more like a mini operating system (**OS**) rather than just an applied software. 
+
+- In **R**, we use different packages to solve different problems. 
+Here **packages** are like applied software on other OSs (e.g., Windows/MacOS/Linux )
+
+- Different packages in **R** sometimes can solve the same problem. 
+&gt; For instance, ***tidyverse*** and ***data.table*** are both excellent packages for data manipulation. 
+&gt; - They are written by different authors but solve the same problem by different logic. 
+&gt; - The differences are a little like the differences among Microsoft Word and Google Doc. 
+&gt; - You can choose either just by your preference!
+
+]
+
+.panel[.panel-name[R Markdown]
+
+**R Markdown** is a file format for making dynamic documents with **R**.
+
+- **R Markdown** can hep you report the results of data analysis
+
+- **R Markdown** can help you present the results of data analysis
+
+- **R Markdown** can help you write academic paper
+
+
+]
+]
+
+---
+## Reference for Learning R
+
+.panelset[
+.panel[.panel-name[General]
+-  [R Fun](https://rfun.library.duke.edu)
+
+-   [R Teaching](https://education.rstudio.com/teach/tools/)
+
+-   [R Documentation](https://www.rdocumentation.org/?=ggplot&amp;=%s)
+
+-   [What They Forget to Teach you about R](https://rstats.wtf)
+
+]
+.panel[.panel-name[R and Data Analysis]
+
+
+-  [Learning Statistics in R](https://ademos.people.uic.edu/index.html)
+
+-   [Introduction to Econometrics with R](https://www.econometrics-with-r.org/index.html)
+
+-   [R Linear Regression Bayesian](https://www.rensvandeschoot.com/tutorials/r-linear-regression-bayesian-using-brms/)
+
+-   [Exploratory Data Analysis](https://edav.info/mosaic.html)
+
+]
+.panel[.panel-name[R Package Tutorials]
+
+.pull-left[
+-  [Xaringan](https://bookdown.org/yihui/rmarkdown/xaringan.html) for power point
+
+-  [Xaringan Extra](https://pkg.garrickadenbuie.com/xaringanExtra/#/README?id=xaringanextra)
+
+-  [Xaringan Theme Generator](https://pkg.garrickadenbuie.com/xaringanthemer/articles/xaringanthemer.html)
+
+-  [data.table](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html)
+
+-  [FactoMineR](http://factominer.free.fr/factomethods/index.html) for factor analysis and clustering analysis
+
+-  [Factoextra](http://www.sthda.com/english/wiki/factoextra-r-package-easy-multivariate-data-analyses-and-elegant-visualization)
+]
+.pull-right[
+-  [lavaan](https://lavaan.ugent.be) for SEM
+
+-  [lme4](https://www.rensvandeschoot.com/tutorials/lme4/) for HLM
+
+-  [ggplot2](https://ggplot2-book.org) for figures
+
+-  [gt](https://gt.rstudio.com/articles/intro-creating-gt-tables.html) for tables
+
+-  [ggpubr](https://rpkgs.datanovia.com/ggpubr/index.html)
+
+-  [sjPlot](https://strengejacke.github.io/sjPlot/)
+
+-  [stargazer](https://www.princeton.edu/~otorres/NiceOutputR.pdf)
+]
+]
+.panel[.panel-name[R Markdown]
+-  [R Markdown](https://bookdown.org/yihui/rmarkdown/yihui-xie.html)
+
+-  [R Markdown for Scientists](https://rmd4sci.njtierney.com)
+
+- [R Blogdown](https://bookdown.org/yihui/blogdown/)
+
+-  [R Bookdown](https://bookdown.org/yihui/bookdown/)
+
+-  [CSS](https://www.w3schools.com/css/css_background.asp)
+
+-  [HTML](https://www.w3schools.com/html/html_intro.asp)
+]
+]
+
+---
+class: middle inverse nh1
+
+# R Download and Installation
+---
+class: middle
+
+## R download and installation
+
+https://mirror-hk.koddos.net/CRAN/
+
+--
+
+## R Studio download and installation
+
+https://rstudio.com/products/rstudio/download/#download
+
+--
+
+## R Package Download and Installation
+
+
+```r
+install.packages("data.table") # download and install the package
+library(data.table) # open the package
+```
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current% / %total%",
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
