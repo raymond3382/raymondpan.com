@@ -2,12 +2,11 @@
 <html>
    <head>
    </head>
-   <body style="background-color:darkslategray;">
+   <body style="background-color:slightslategray;">
    </body>
 </html>
 
 <article class="mx-6 my-8">
-    <h1 class="font-bold text-3xl text-primary-text"><font color ='white'><b>{{ .Title }}</b></font></h1>
     {{ with .Content }}
     <div class="content">
        {{ . }}
@@ -15,7 +14,7 @@
     {{ end }}
 </article>
 <div class="bg-secondary-bg rounded px-6">
-    <font color = "purple" >
+    <font color = "teal" >
     {{ partial "components/summary-list-plain" .Paginator.Pages }}
     </font>
 </div>

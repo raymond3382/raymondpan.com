@@ -17,7 +17,7 @@ widget:
   
   background:
     # Options: primary, secondary, tertiary or any valid color value. Default is primary.
-    # color: 
+    # color: darkslategray
     #image: img/img4.jpg
     # Options: auto, cover and contain. Default is auto.
     size: cover

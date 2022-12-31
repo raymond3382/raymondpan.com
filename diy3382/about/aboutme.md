@@ -25,15 +25,14 @@ date: 2021-12-01
 >
 > **Social Identity Theory**<br> With emphasis on <font color ='teal'>Consumer Behaviors</font> and <font color ='teal'>Marketing Strategy</font>
 
-## <font color = 'black'>Teaching Interests</font>
+## <font color = 'black'>Teaching Activities</font>
 
-> R and Business Analysis <br>
+>Marketing<br>
 >
-> R and Academic Research in Social Science<br>
+> Sales Management<br>
 >
-> International Marketing <br>
+> Non-Profit Marketing <br>
 >
-> Branding Managment
 
 ## <font color = 'black'>Ongoing Projects</font>
 

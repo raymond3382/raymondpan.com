@@ -10,7 +10,7 @@ theme: "hugo-eureka"
 paginate: 3
 copyright: >
   &copy; 2021 Haibo Pan
-enableEmoji: true
+enableEmoji: ture
 enableGitInfo: false
 summaryLength: 75
 

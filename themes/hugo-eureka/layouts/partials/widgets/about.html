@@ -7,11 +7,11 @@
   {{ end }}
   <div class="flex-grow mt-4 md:mt-0">
     <div class="text-3xl py-4">
-      <font color = 'gold'><b>{{ .Title }}</b></font>
+      <font color = 'black'><b>{{ .Title }}</b></font>
       </div>
 
     <div class="flex items-center pt-4">
-      <font color='violet' size = 4>
+      <font color='black' size = 4>
       {{ with or (.Params.role) (.Params.organizations)}}
       <i class="fas fa-user"></i>
       {{ end }}
@@ -35,7 +35,7 @@
     {{ end }}
   </div>
   <div class="flex md:flex-col justify-center items-end ml-8">
-    <font color = 'gold'>
+    <font color = 'darkslategray'>
     {{ $brand := $.Param "social"}}
     {{ range $brand }}
       {{/* Deprecation warning(v1.0.0) starts */}}
