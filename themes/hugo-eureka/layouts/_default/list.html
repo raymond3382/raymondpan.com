@@ -1,23 +1,23 @@
 {{ define "main" }}
 <html>
-   <head>
-   </head>
-   <body style="background-color:slightslategray;">
+   <body style="background-color:white;">
    </body>
 </html>
 
-<article class="mx-6 my-8">
-    {{ with .Content }}
+<article class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
+    <h1 class="font-bold text-3xl text-primary-text"><font color ='purple' face = "Bratannic">{{ .Title }}</font></h1>
+    <body>
+        <font color ='purple'>{{ with .Content }} </font>
+    </body>
     <div class="content">
-       {{ . }}
+        <font color ='purple'>{{ . }}</font>
     </div>
     {{ end }}
 </article>
-<div class="bg-secondary-bg rounded px-6">
-    <font color = "teal" >
+<div class="w-full max-w-screen-lg mx-auto" style="font-weight: lighter">
+    <font color = "steelblue" face = "Comic Sans MS">
     {{ partial "components/summary-list-plain" .Paginator.Pages }}
     </font>
 </div>
 {{ template "_internal/pagination.html" . }}
 {{ end }}
-

@@ -2,14 +2,18 @@
 {{ $hasToc := and (in .TableOfContents "<li>" ) (.Params.toc) }}
 {{ $hasSidebar := or ($hasToc) (.Params.series) }}
 
-<body style="background-color:slightslategray;">
+<body style="background-color:white;">
 </body>
+<html>
+    <header class = "color-eureka">
+    </header>
+</html>
 
 
-<div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
+<div class = "w-full max-w-screen-xl mx-auto">
     <div
         class="col-span-2 {{ if not $hasSidebar }} {{- print "lg:col-start-2" -}} {{ end }} lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
-        <h1 class="font-bold text-3xl text-primary-text"><font color ="purple">{{ .Title }}</font></h1>
+        <h1 class="font-bold text-3xl text-primary-text"><font color ='purple' face = "Bratannic">{{ .Title }}</font></h1>
         {{ partial "components/post-metadata" . }}
         
         {{ $featured := partial "utils/get-featured" . }}
@@ -65,5 +69,4 @@
         hljs.initHighlightingOnLoad();
     })
 </script>
-
 {{ end }}
