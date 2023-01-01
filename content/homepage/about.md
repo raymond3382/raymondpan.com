@@ -1,11 +1,11 @@
 ---
 title: Hi, I'm Raymond
 draft: draft
-role: Assistant Professor  
+role: <font color = "black">Assistant Professor</font>  
 avatar: images/icon.png
 
 organization:
-  name: Macau University of Science and Technology
+  name: <font color = "darkslategray"><I> Macau University of Science and Technology</I></font>
   url: https://www.must.edu.mo
 
 # bio: "It does not matter how slowly you go so long as you do not stop." —Confucius

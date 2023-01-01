@@ -1,9 +1,9 @@
 :root {
-    @apply font-serif bg-primary-bg text-primary-text;
-    --color-eureka: rgb(28, 126, 124);
-    --color-primary-bg: rgb(255, 255, 255);
-    --color-secondary-bg: rgb(28, 126, 124);
-    --color-tertiary-bg: rgb(224, 169, 222);
+    @apply font-serif bg-secondary-bg text-primary-text;
+    --color-eureka: #38B2AC;
+    --color-primary-bg: rgb(246, 244, 240);
+    --color-secondary-bg: rgba(30, 126, 144,1);
+    --color-tertiary-bg: rgba(224, 169, 222,1);
     --color-primary-text: rgba(0,0,0,0.85);
     --color-secondary-text: rgba(0,0,0,0.7);
     --color-tertiary-text: rgba(0,0,0,0.55);
@@ -19,6 +19,7 @@
     --color-tertiary-text: rgba(255,255,255,0.55);
 }
 
-a:hover {
+a:hover,
+a:hover * {
     @apply text-eureka transition duration-300 ease-in-out;
 }

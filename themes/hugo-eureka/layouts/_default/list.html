@@ -5,7 +5,7 @@
 </html>
 
 <article class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
-    <h1 class="font-bold text-3xl text-primary-text"><font color ='purple' face = "Bratannic">{{ .Title }}</font></h1>
+    <h1 class="font-bold text-3xl text-primary-text"><font color ='purple' face = "Arial">{{ .Title }}</font></h1>
     <body>
         <font color ='purple'>{{ with .Content }} </font>
     </body>
@@ -15,7 +15,7 @@
     {{ end }}
 </article>
 <div class="w-full max-w-screen-lg mx-auto" style="font-weight: lighter">
-    <font color = "steelblue" face = "Comic Sans MS">
+    <font color = "steelblue" face = "Times New Roman">
     {{ partial "components/summary-list-plain" .Paginator.Pages }}
     </font>
 </div>
