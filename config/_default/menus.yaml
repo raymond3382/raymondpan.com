@@ -20,6 +20,6 @@ main:
     weight: 3 
       
   - name: Contact
-    url: '/ContactMe'
+    url: '/contactme'
     weight: 6 
       
