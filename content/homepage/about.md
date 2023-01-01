@@ -59,9 +59,9 @@ widget:
 </style>
 
 
-### <font color = 'black'> ABOUT ME </font>
+### <font color = 'steelblue' face = "Arial"> ABOUT ME </font>
 
-To be writing
+Coming soon
 
 
 

@@ -19,7 +19,7 @@ main:
     url: /posts/
     weight: 3 
       
-  - name: Contact Me
+  - name: Contact
     url: '/ContactMe'
     weight: 6 
       
